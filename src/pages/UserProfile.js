@@ -1,0 +1,43 @@
+import { SideNavBar } from "../layout/SideNavBar";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+export function UserProfile(props) {
+    const [input, setInput] = useState();
+    const handdleChange = event => {
+        setInput(event.target.value);
+    }
+    return (
+        <>
+            <div className="userdashboard-main" style={{ paddingLeft: "5%" }}>
+                <img className='rounded-circle' style={{ display: "block", marginTop: "75px", marginLeft: "25px" }} width={50} height={50} src='https://w7.pngwing.com/pngs/73/580/png-transparent-arturia-business-logo-musical-instruments-individual-retirement-account-logo-business-sound.png' />
+                <label style={{ border: "2px solid black", padding: "4px", margin: "5px 20px" }}>Author</label>
+                <form className="form-group">
+                    <div className="mb-3 mt-3 row">
+                        <label htmlFor='username' className="col-sm-2 col-form-label">User Name</label>
+                        <div className="col-sm-10">
+                            <input type="text" className="form-control w-75" disabled defaultValue="Joshua" id="username" onChange={handdleChange} />
+                        </div>
+                    </div>
+                    <div className="mb-3 mt-3 row">
+                        <label htmlFor='email' className="col-sm-2 col-form-label">Email</label>
+                        <div className="col-sm-10">
+                            <input type="text" className="form-control w-75" disabled defaultValue="joshua@gmail.com" id="email" onChange={handdleChange} />
+                        </div>
+                    </div>
+                    <div className="mb-3 mt-3 row">
+                        <label htmlFor='staticEmail' className="col-sm-2 col-form-label">Join At</label>
+                        <label className="col-sm-2 col-form-label">11/16/2022</label>
+                    </div>
+                    <div className="mb-3 mt-3 row">
+                        <label htmlFor='staticEmail' className="col-sm-2 col-form-label">Update Account At</label>
+                        <label className="col-sm-2 col-form-label">11/16/2022</label>
+                    </div>
+                    <div className="text-center">
+                        <NavLink className="btn btn-secondary" to={"/userdashboard/userprofile/update"}>Update</NavLink>
+                    </div>
+                </form>
+
+            </div>
+        </>
+    )
+}
