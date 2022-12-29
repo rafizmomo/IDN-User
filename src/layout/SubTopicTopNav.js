@@ -10,16 +10,11 @@ export function SubTopicTopNav() {
     // const path = location.pathname;
     useEffect(() => {
         getSubTopic();
-        getTopic();
     }, []);
 
     const getSubTopic = async () => {
         const response = await axios.get("http://127.0.0.1:8000/api/sub_topics");
         setNews(response.data.sub_topics);
-    }
-    const getTopic = async () => {
-        const response = await axios.get("http://127.0.0.1:8000/api/topics");
-        setTopics(response.data.topics);
     }
     return (
         <>
@@ -31,7 +26,7 @@ export function SubTopicTopNav() {
                             news.map((subtopic, key) => {
                                 return (
                                     <div className="nav-item-subtopic">
-                                        <Link key={key} to={`${subtopic.sub_topic_slug}`}>{subtopic.sub_topic_slug}</Link>
+                                        <NavLink key={key} to={`${subtopic.sub_topic_slug}`}>{subtopic.sub_topic_slug}</NavLink>
                                     </div>
                                 )
                             })

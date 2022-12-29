@@ -11,35 +11,31 @@ import { AuthorNews, CreateAuthorAccountForm, CreateNewsForm } from '../pages/Us
 import { SideNavBar } from '../layout/SideNavBar';
 import Footer from '../layout/Footer';
 import { TopNavLayoutLoggedIn } from '../layout/TopNavigationLoggedIn';
-import { TopNavLayout } from '../layout/TopNavigation';
-// import { SubTopicTopNav } from '../layout/SubTopicTopNav';
-import { TopicHome } from '../pages/TopicHome';
-import { SubTopic } from '../pages/SubTopicHome';
-// import { UserDashboardCreateAuthorReceivingAccount, UserDashboardAuthorReceivingAccount } from '../pages/UserDashboardAuthorReceivingAccount';
-// import { AuthorHasWriteNews } from '../layout/AuthorHasWriteNews';
+import { SubTopicTopNav } from '../layout/SubTopicTopNav';
+import { UserDashboardCreateAuthorReceivingAccount, UserDashboardAuthorReceivingAccount } from '../pages/UserDashboardAuthorReceivingAccount';
 import { History } from '../pages/AdminDashboardHistory';
 import { NavLinks } from './NavLinks';
+import { TopicSubTopicNavigation } from './TopicSubTopicNavigation';
 export function MainComp() {
     return (
         <>
             <NavLinks />
             <Routes>
                 <Route path='/' element={<><Home /><Footer /></>} />
-                <Route path='/:topic_slug' element={<><TopicHome /><Footer /></>} />
-                <Route path='/:topic_slug/:sub_topic_slug/' element={<SubTopic />} />
+                <Route path='/:topic_slug/*' element={<><TopicSubTopicNavigation /><Footer /></>} />
                 <Route path='/signup' element={<><SignUp /><Footer /></>} />
                 <Route path='/signin' element={<><SignIn /><Footer /></>} />
                 <Route path='/forgetpassword' element={<ForgotPassword />} />
                 <Route path='/changepassword' element={<ChangePassword />} />
-                {/* <Route path='/readnews' element={<><TopNavLayoutLoggedIn /><SubTopicTopNav /><ReadNewsPage /><Footer /></>} />
-                <Route path='/userdashboard/userprofile' element={<><TopNavLayoutLoggedIn /><SideNavBar /><UserProfile /></>} />
-                <Route path='/userdashboard/userprofile/update' element={<><TopNavLayoutLoggedIn /><SideNavBar /><UpdateUserProfile /></>} />
-                <Route path='/userdashboard/news' element={<><TopNavLayoutLoggedIn /><SideNavBar /><AuthorHasWriteNews /></>} />
-                <Route path='/userdashboard/news/createauthoraccount' element={<><TopNavLayoutLoggedIn /><SideNavBar /><CreateAuthorAccountForm /></>} />
-                <Route path='/userdashboard/news/createnews' element={<><TopNavLayoutLoggedIn /><SideNavBar /><CreateNewsForm /></>} />
-                <Route path='/userdashboard/history' element={<><TopNavLayoutLoggedIn /><SideNavBar /><History /></>} />
-                <Route path='/userdashboard/authoraccountbalance/createaccountbalance' element={<><TopNavLayoutLoggedIn /><SideNavBar /><UserDashboardCreateAuthorReceivingAccount /></>} />
-                <Route path='/userdashboard/authoraccountbalance/' element={<><TopNavLayoutLoggedIn /><SideNavBar /><UserDashboardAuthorReceivingAccount /></>} /> */}
+                <Route path='/readnews' element={<><SubTopicTopNav /><ReadNewsPage /><Footer /></>} />
+                <Route path='/userdashboard/userprofile' element={<><SideNavBar /><UserProfile /></>} />
+                <Route path='/userdashboard/userprofile/update' element={<><SideNavBar /><UpdateUserProfile /></>} />
+                <Route path='/userdashboard/news' element={<><SideNavBar /><AuthorNews /></>} />
+                <Route path='/userdashboard/news/createauthoraccount' element={<><SideNavBar /><CreateAuthorAccountForm /></>} />
+                <Route path='/userdashboard/news/createnews' element={<><SideNavBar /><CreateNewsForm /></>} />
+                <Route path='/userdashboard/history' element={<><SideNavBar /><History /></>} />
+                <Route path='/userdashboard/authoraccountbalance/createaccountbalance' element={<><SideNavBar /><UserDashboardCreateAuthorReceivingAccount /></>} />
+                <Route path='/userdashboard/authoraccountbalance/' element={<><SideNavBar /><UserDashboardAuthorReceivingAccount /></>} />
             </Routes>
         </>
     )
