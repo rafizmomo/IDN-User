@@ -21,7 +21,7 @@ const TopNavLayout = () => {
                         <div className="top-nav-members">
                             {topics.map((data) => {
                                 return (
-                                    <a className="top-nav-links" href={`${data.topic_slug}`} > {data.topic_title}</a>
+                                    <a className="top-nav-links" href={`${data.topic_slug}`}> {data.topic_title}</a>
                                 )
                             })}
                         </div>

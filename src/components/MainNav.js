@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
@@ -34,8 +34,8 @@ export function MainComp() {
                 <Route path='/userdashboard/news/createauthoraccount' element={<><SideNavBar /><CreateAuthorAccountForm /></>} />
                 <Route path='/userdashboard/news/createnews' element={<><SideNavBar /><CreateNewsForm /></>} />
                 <Route path='/userdashboard/history' element={<><SideNavBar /><History /></>} />
-                <Route path='/userdashboard/authoraccountbalance/createaccountbalance' element={<><SideNavBar /><UserDashboardCreateAuthorReceivingAccount /></>} />
                 <Route path='/userdashboard/authoraccountbalance/' element={<><SideNavBar /><UserDashboardAuthorReceivingAccount /></>} />
+                <Route path='/userdashboard/authoraccountbalance/createaccountbalance' element={<><SideNavBar /><UserDashboardCreateAuthorReceivingAccount /></>} />
             </Routes>
         </>
     )

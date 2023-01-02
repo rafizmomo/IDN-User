@@ -1,31 +1,66 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+// Form for creating author receving money account
 export function UserDashboardCreateAuthorReceivingAccount() {
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [accountNumber, setAccountNumber] = useState("");
+    const [accountNumberErrorMessage, setAccountNumberErrorMessage] = useState("");
+    useEffect(() => {
+        let userdata = window.localStorage.getItem("user");
+        let userdataobject = JSON.parse(userdata);
+        async function getUser() {
+            const user = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]);
+            setName(user.data.at(0)["name"]);
+            setEmail(user.data.at(0)["email"]);
+        }
+        getUser();
+    }, []);
+    const Submit = async (e) => {
+        e.preventDefault();
+        let userdata = window.localStorage.getItem("user");
+        let userdataobject = JSON.parse(userdata);
+        console.log(userdataobject["user"]);
+        let formData = new FormData();
+        formData.append("account_number", accountNumber);
+        await axios.post("http://127.0.0.1:8000/api/user/author_balance_account/" + userdataobject["user"], formData).then(response => {
+            if (response.status === 202) {
+                window.location.replace("/userdashboard/news");
+            }
+        }).catch(error => {
+            if (error.response.status === 422) {
+                setAccountNumberErrorMessage(JSON.parse(error.response.data));
+                console.log(error.response.data);
+
+            }
+        });
+    }
     return (
         <div className="userdashboard-main">
             <div className="container-fluid">
-                <form className="form-group w-75" style={{ position: "relative", left: "100px", top: "100px" }}>
+                <form className="form-group w-75" style={{ position: "relative", left: "100px", top: "100px" }} onSubmit={Submit}>
                     <div className="mb-3 mt-3 row">
                         <label htmlFor='username' className="col-sm-2 col-form-label">Name</label>
                         <div className="col-sm-10">
-                            <input type="text" className="form-control" disabled defaultValue="Joshua" id="username" />
+                            <span id="username">{name}</span>
                         </div>
                     </div>
                     <div className="row mb-3">
                         <label htmlFor='email' className="col-sm-2 col-form-label">Email</label>
                         <div className="col-sm-10">
-                            <input type="text" className="form-control" disabled="Joshua" id="email" />
+                            <span type="text">{email}</span>
                         </div>
                     </div>
                     <div className="row">
-                        <label htmlFor='username' className="col-sm-2 col-form-label">Account Bank Number</label>
+                        <label className="col-sm-2 col-form-label">Account Bank Number</label>
                         <div className="col-sm-10">
-                            <input type="text" className="form-control" placeholder="0000000" id="username" />
+                            <input type="number" className="form-control" placeholder="0000000" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} />
                         </div>
+                        {accountNumberErrorMessage["account_number"] && <span className="text-danger">{accountNumberErrorMessage["account_number"][0]}</span>}
                     </div>
-                    <div className="text-center btn-cust btn-red margin-auto">
-                        <Link to={"#"} className="text-center nav-link">Create Account Balance</Link>
-                    </div>
+                    <button type="input" className="text-center  btn btn-danger ">Create Account Balance</button>
                 </form>
             </div>
         </div>

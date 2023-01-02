@@ -18,7 +18,7 @@ const TopNavLayoutLoggedIn = () => {
     const getUserProfile = async () => {
         const userdata = localStorage.getItem("user");
         const userobject = JSON.parse(userdata);
-        const response = await axios.get("http://127.0.0.1:8000/api/userprofile/" + 2);
+        const response = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userobject["user"]);
         setUser(response.data);
     }
     const activeLink = ({ isActive }) => {

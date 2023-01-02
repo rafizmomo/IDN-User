@@ -12,12 +12,10 @@ export function UserProfile(props) {
     const handdleChange = event => {
         setInput(event.target.value);
     }
-
     //Use effect ngasih effect ke page User Profile pas pertama kali di-load/reload
     useEffect(() => {
         getUserProfile();//Pas page ini di-load/reload maka data user akan diload juga
     }, []);
-
     useEffect(() => {
         user.map(data => {
             if (data.photo_profile_link != null) {
@@ -27,7 +25,6 @@ export function UserProfile(props) {
             }
         });
     });
-
     // Data fetching dari http://127.0.0.1:8000/api/user/profile/
     const getUserProfile = async () => {
         const userdata = localStorage.getItem("user");
@@ -35,7 +32,6 @@ export function UserProfile(props) {
         const user = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userobject["user"]);
         setUser(user.data);
     }
-
     return (
         <>
             <div className="userdashboard-main" style={{ paddingLeft: "5%" }}>
@@ -60,11 +56,11 @@ export function UserProfile(props) {
                                     </div>
                                     <div className="mb-3 mt-3 row">
                                         <label htmlFor='staticEmail' className="col-sm-2 col-form-label">Join At</label>
-                                        <label className="col-sm-2 col-form-label">11/16/2022</label>
+                                        <label className="col-sm-2 col-form-label">{new Date(data.created_at).toLocaleDateString()}</label>
                                     </div>
                                     <div className="mb-3 mt-3 row">
                                         <label htmlFor='staticEmail' className="col-sm-2 col-form-label">Update Account At</label>
-                                        <label className="col-sm-2 col-form-label">11/16/2022</label>
+                                        <label className="col-sm-2 col-form-label">{new Date(data.updated_at).toLocaleDateString()}</label>
                                     </div>
                                     <div className="text-center">
                                         <NavLink className="btn btn-secondary" to={"/userdashboard/userprofile/update"}>Update</NavLink>

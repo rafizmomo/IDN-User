@@ -1,6 +1,15 @@
 import { SideNavBar } from "../layout/SideNavBar"
 import Footer from "../layout/Footer";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 export function UpdateUserProfile() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const userdata = window.localStorage.getItem("user");
+        if (!userdata) {
+            navigate("/");
+        }
+    });
     return (
         <>
             <div className="userdashboard-main">

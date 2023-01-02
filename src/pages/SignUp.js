@@ -2,13 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function ErrorMessageComponent(props) {
-    return (
-        <>
-            {props.errors.name && <div>test {props.errors.name[0]}</div>}
-        </>
-    )
-}
+
 export default function SignUp() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -25,10 +19,10 @@ export default function SignUp() {
         formData.append("email", email);
         formData.append("password", password);
         await axios.post("http://127.0.0.1:8000/api/user/register", formData).then(response => {
-            if (response.status == 200) {
+            if (response.status === 200) {
                 setMessages(response.data.message);
                 if (response.data.message) {
-                    // navigate("/");
+                    navigate("/");
                     setTimeout(() => {
                         console.log(response.data);
                         window.localStorage.setItem("user", JSON.stringify(response.data));
@@ -36,13 +30,16 @@ export default function SignUp() {
                 }
             }
         }).catch(error => {
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 setErrorName(JSON.parse(error.response.data)["name"]);
                 setErrorEmail(JSON.parse(error.response.data)["email"]);
                 setErrorPassword(JSON.parse(error.response.data)["password"]);
             }
         });
     }
+    useEffect(() => {
+
+    })
     const signup_value = "Signup";
     return (
         <>
@@ -84,8 +81,8 @@ export default function SignUp() {
                     </div>
                     <div className="mt-3 col-sm-3"> Or </div>
                     <div className="mt-2 col-sm-3">
-                        <buton className="btn btn-secondary">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png" width={20} height={20} /> Signin With Google
+                        <buton className="btn btn-secondary d-flex flex-row align-items-center">
+                            <img alt="user profile avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png" width={40} height={40} /> <span>Signin With Google</span>
                         </buton>
                     </div>
                 </div>
