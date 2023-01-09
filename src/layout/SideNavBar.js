@@ -21,7 +21,7 @@ export function SideNavBar() {
                         <NavLink to="/userdashboard/history">History</NavLink>
                     </li>
                     <li className="userdashboard-overlay-content">
-                        <NavLink to="/userdashboard/authoraccountbalance/createaccountbalance">Money Receiving Account</NavLink>
+                        <NavLink to="/userdashboard/authoraccountbalance">Money Receiving Account</NavLink>
                     </li>
                     <li className="userdashboard-overlay-content border-0 mt-5 text-center">
                         <button className="btn btn-primary">Signout</button>

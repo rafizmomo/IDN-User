@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -8,13 +8,27 @@ export function UserDashboardCreateAuthorReceivingAccount() {
     const [name, setName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
     const [accountNumberErrorMessage, setAccountNumberErrorMessage] = useState("");
+    const [isStoped, setIsseStoped] = useState(true);
+    const navigate = useNavigate();
     useEffect(() => {
+        let ismounted = true;
+        setTimeout(() => setIsseStoped(false), 100);
         let userdata = window.localStorage.getItem("user");
         let userdataobject = JSON.parse(userdata);
         async function getUser() {
             const user = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]);
-            setName(user.data.at(0)["name"]);
-            setEmail(user.data.at(0)["email"]);
+            setEmail(user.data.author.at(0)["email"]);
+            setName(user.data.author.at(0)["name"]);
+            if (user.data.author.at(0)["balance_account_number"] != null) {
+                if (ismounted) {
+                    navigate("/userdashboard/authoraccountbalance");
+                }
+            }
+        }
+        if (isStoped === false) {
+            return () => {
+                ismounted = false
+            }
         }
         getUser();
     }, []);
@@ -68,14 +82,28 @@ export function UserDashboardCreateAuthorReceivingAccount() {
 }
 
 export function UserDashboardAuthorReceivingAccount() {
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        const userdata = window.localStorage.getItem("user");
+        const userdataobject = JSON.parse(userdata);
+        async function getUser() {
+            axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]).then(response => {
+                setUser(response.data.author);
+            });
+        }
+        getUser();
+    }, [])
     let activeteButtonClicked = (event) => {
         event.preventDefault();
+        let formActivated = document.querySelectorAll(".actived-input-in-balance-account-page");
+        formActivated.forEach(element => element.disabled = false);
         let activebutton = document.querySelectorAll(".button-actived");
         activebutton.forEach(element => { element.style.display = "block" });
     }
-
     let removeActiveButton = (event) => {
         event.preventDefault();
+        let formActivated = document.querySelectorAll(".actived-input-in-balance-account-page");
+        formActivated.forEach(element => element.disabled = true);
         document.querySelectorAll(".button-actived").forEach(element => { element.style.display = "none" });
     }
     useEffect(() => {
@@ -86,36 +114,49 @@ export function UserDashboardAuthorReceivingAccount() {
     return (
         <>
             <div className="userdashboard-main">
-                <form className="w-75 mt-5" style={{ margin: "auto" }}>
-                    <div className="mb-3 mt-3 row">
-                        <label htmlFor='username' className="col-sm-2 col-form-label">Name</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" disabled defaultValue="Joshua" id="username" />
-                        </div>
-                    </div>
-                    <div className="row mb-3">
-                        <label htmlFor='email' className="col-sm-2 col-form-label">Email</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" disabled="Joshua" id="email" />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <label htmlFor='username' className="col-sm-2 col-form-label">Account Bank Number</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" placeholder="0000000" id="username" />
-                        </div>
-                    </div>
-                    <div className="margin-auto d-lg-flex justify-content-between mt-3">
-                        <button className="btn btn-primary" onClick={activeteButtonClicked}>Activate Update</button>
-                        <button className="btn btn-success button-actived">Update</button>
-                        <button className="btn btn-secondary button-actived" onClick={removeActiveButton}>Cancel</button>
-                        <button className="btn btn-danger button-actived">Delete Account</button>
-                    </div>
-                </form>
+
+                {
+                    user.map((data, index) => {
+                        return (
+                            <form className="w-75 mt-5" style={{ margin: "auto" }} key={index}>
+                                <div>
+                                    <div className="mb-3 mt-3 row">
+                                        <label htmlFor='username' className="col-sm-2 col-form-label">Name</label>
+                                        <div className="col-sm-10">
+                                            <input type="text" className="form-control actived-input-in-balance-account-page" defaultValue={data.name} disabled id="username" />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <label htmlFor='email' className="col-sm-2 col-form-label">Email</label>
+                                        <div className="col-sm-10">
+                                            <input type="text" className="form-control actived-input-in-balance-account-page" defaultValue={data.email} disabled id="email" />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <label htmlFor='username' className="col-sm-2 col-form-label">Account Bank Number</label>
+                                        <div className="col-sm-10">
+                                            <input type="text" className="form-control" defaultValue={data.balance_account_number} disabled id="username" />
+                                        </div>
+                                    </div>
+                                    <div className="margin-auto d-lg-flex justify-content-between mt-3">
+                                        <button className="btn btn-primary" onClick={activeteButtonClicked}>Activate Update</button>
+                                        <button className="btn btn-success button-actived">Update</button>
+                                        <button className="btn btn-secondary button-actived" onClick={removeActiveButton}>Cancel</button>
+                                        <button className="btn btn-danger button-actived">Delete Account</button>
+                                    </div>
+                                </div>
+                            </form>
+                        )
+                    })
+                }
                 <div className="d-flex justify-content-between flex-column" >
                     <div className="d-flex justify-content-start" style={{ marginTop: "75px" }}>
                         <label className="mt-3">Amount of Money Collected: </label>
-                        <div style={{ width: "max-content", border: "1px solid grey", marginLeft: "20px", padding: "20px 10px" }}>IDR. 50.000</div>
+                        {
+                            user.map((data, index) => {
+                                return <div style={{ width: "max-content", border: "1px solid grey", marginLeft: "20px", padding: "20px 10px" }}>{data.balance}</div>
+                            })
+                        }
                     </div>
                 </div>
                 <div className="w-75 mt-5">

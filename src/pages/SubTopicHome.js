@@ -2,12 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SubTopicTopNav } from "../layout/SubTopicTopNav";
-export function SubTopic() {
-    const [news, setNews] = useState([])
-    const { topic_slug, sub_topic_slug } = useParams();
-    console.log(sub_topic_slug);
+export function SubTopic(props) {
+    const [news, setNews] = useState([]);
+    const { sub_topic_slug } = useParams();
+    // console.log(props.match.params.subtopic.sub_topic_slug);
     useEffect(() => {
         getNews();
+
     }, []);
     const getNews = async () => {
         await axios.get(`http://127.0.0.1:8000/api/news/topics/sub_topics/${sub_topic_slug}`).then(response => {
@@ -29,15 +30,10 @@ export function SubTopic() {
                             return (
                                 <div className="col-sm-4" key={index}>
                                     <div className="card mb-3">
-                                        <div style={{
-                                            backgroundImage: `url(${data.news_picture_link})`,
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundSize: "cover",
-                                            padding: "10px",
-                                            backgroundPosition: "center",
+                                        <img style={{
                                             maxWidth: "100%",
                                             height: "150px"
-                                        }}> </div>
+                                        }} src={data.news_picture_link} />
                                         <div>
                                             <h4 className='card-title'>{data.news_title}</h4>
                                             <div className="card-text">{data.news_content}</div>
@@ -49,7 +45,7 @@ export function SubTopic() {
                     }
                 </div>
                 <div className="text-center">
-                    <button className="btn btn-success mb-2"> Load More </button>
+                    <button className="btn btn-success mb-2"> Load More Test</button>
                 </div>
             </div>
         </>

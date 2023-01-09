@@ -47,7 +47,7 @@ export default function SignUp() {
                 <div className="text-center border border-dark rounded mt-3">Indonesia Open News
                     <br />User Signup
                 </div>
-                <form className="form-group" onSubmit={signup}>
+                <form className="form-group mt-2" onSubmit={signup}>
                     <div className="row mt-3 mb-3">
                         <label htmlFor="username" className="col-sm-2 col-form-label ">User Name</label>
                         <div className="col-sm-10">

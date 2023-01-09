@@ -30,18 +30,18 @@ export function UserProfile(props) {
         const userdata = localStorage.getItem("user");
         const userobject = JSON.parse(userdata);
         const user = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userobject["user"]);
-        setUser(user.data);
+        setUser(user.data.author);
     }
     return (
         <>
             <div className="userdashboard-main" style={{ paddingLeft: "5%" }}>
                 <div className="form-group">
                     {
-                        user.map(data => {
+                        user.map((data, index) => {
                             return (
-                                <div>
+                                <div key={index}>
                                     <img className='rounded-circle' style={{ display: "block", marginTop: "75px", marginLeft: "25px" }} width={50} height={50} src={photoProfile} />
-                                    <label style={{ border: "2px solid black", padding: "4px", margin: "5px 20px" }}>Author</label>
+                                    <label style={{ border: "2px solid black", padding: "4px", margin: "5px 20px" }}>{data.role === "author" ? "Author" : ""}</label>
                                     <div className="mb-3 mt-3 row">
                                         <label htmlFor='username' className="col-sm-2 col-form-label">User Name</label>
                                         <div className="col-sm-10">
