@@ -25,48 +25,10 @@ export function UpdateUserProfile() {
         }
         setIsImageSelected(true);
     }
-
-    useEffect(() => {
-        setTimeout(() => {
-            setIsCanceled(false);
-        }, 0.1);
-        let mounted = true;
+    async function PrevoiusSavedPhotoProfile() {
         const userdata = window.localStorage.getItem("user");
         const userdataobject = JSON.parse(userdata);
-        async function getPreviousSavedImage() {
-            let user = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]);
-            let imageUrl = await axios({
-                url: "http://127.0.0.1:8000/api/userprofile/photo_profile/" + userdataobject["user"],
-                method: "GET",
-                responseType: "blob",
-            });
-            let imageData = imageUrl.data;
-            let type = imageData.type;
-            let uploadedFile = new File([imageData], user.data.author[0]["photo_profile_name"], { type: type });
-            if (mounted) {
-                const { id, name, email, author_description, created_at, updated_at } = user.data.author[0];
-                setId(id);
-                setUserDescription(author_description);
-                setDefaultUserDescription(author_description);
-                setUserName(name);
-                setDefautlUserName(name);
-                setEmail(email);
-                setCreatedAt(created_at);
-                setUpdatedAt(updated_at);
-                setSavedImage(uploadedFile);
-            }
-        }
-        if (isCanceled == false) {
-            return () => {
-                mounted = false;
-            }
-        }
-        getPreviousSavedImage();
-    }, [isCanceled, savedImage]);
-    async function PreviousPhotoProfile() {
-        const userdata = window.localStorage.getItem("user");
-        const userdataobject = JSON.parse(userdata);
-        let imagename = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]);
+        let user = await axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]);
         let imageUrl = await axios({
             url: "http://127.0.0.1:8000/api/userprofile/photo_profile/" + userdataobject["user"],
             method: "GET",
@@ -74,43 +36,56 @@ export function UpdateUserProfile() {
         });
         let imageData = imageUrl.data;
         let type = imageData.type;
-        let uploadedFile = new File([imageData], imagename.data.author[0]["photo_profile_name"], { type: type });
+        let uploadedFile = new File([imageData], user.data.author[0]["photo_profile_name"], { type: type });
+        const { id, name, email, author_description, created_at, updated_at } = user.data.author[0];
+        setId(id);
+        setUserDescription(author_description);
+        setDefaultUserDescription(author_description);
+        setUserName(name);
+        setDefautlUserName(name);
+        setEmail(email);
+        setCreatedAt(created_at);
+        setUpdatedAt(updated_at);
+        setSavedImage(uploadedFile);
+
+    }
+
+    function ShowImagePreviewAfterSelectImage() {
         const photo_profile = document.querySelector("#photo-profile");
         const fileReader = new FileReader();
         fileReader.onload = ev => {
             const savedPreview = ev.target.result;
             const selectedPreview = ev.target.result;
             if (selectedPreview == null) {
-                photo_profile.url = savedPreview;
+                photo_profile.src = savedPreview;
             } else {
-                photo_profile.url = ev.target.result;
+                photo_profile.src = ev.target.result;
             }
         }
-        fileReader.readAsDataURL(uploadedFile);
+        fileReader.readAsDataURL(savedImage);
     }
     useEffect(() => {
-        function ShowImagePreviewAfterSelectImage() {
-            const photo_profile = document.querySelector("#photo-profile");
-            const fileReader = new FileReader();
-            fileReader.onload = ev => {
-                const savedPreview = ev.target.result;
-                const selectedPreview = ev.target.result;
-                if (selectedPreview == null) {
-                    photo_profile.src = savedPreview;
-                } else {
-                    photo_profile.src = ev.target.result;
-                }
-            }
-            fileReader.readAsDataURL(savedImage);
-        }
+        setTimeout(() => {
+            setIsCanceled(false);
+        }, 0.1);
+        let mounted = true;
         if (isimageselected == true) ShowImagePreviewAfterSelectImage();
-        if (isimageselected == false) PreviousPhotoProfile();
-    });
+        if (isimageselected == false) {
+            if (mounted === true) {
+                PrevoiusSavedPhotoProfile();
+            }
+        }
+        if (isCanceled == false) {
+            return () => {
+                mounted = false;
+            }
+        }
+    }, []);
     const userSubmit = async (e) => {
         e.preventDefault();
         const userdata = window.localStorage.getItem("user");
         const userdataobject = JSON.parse(userdata);
-        PreviousPhotoProfile();
+        // PreviousPhotoProfile();
         let formData = new FormData();
         formData.append("name", userName);
         formData.append("author_desc", userDescription);

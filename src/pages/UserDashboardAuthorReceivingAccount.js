@@ -80,7 +80,6 @@ export function UserDashboardCreateAuthorReceivingAccount() {
         </div>
     )
 }
-
 export function UserDashboardAuthorReceivingAccount() {
     const [user, setUser] = useState([]);
     useEffect(() => {
@@ -89,6 +88,7 @@ export function UserDashboardAuthorReceivingAccount() {
         async function getUser() {
             axios.get("http://127.0.0.1:8000/api/userprofile/" + userdataobject["user"]).then(response => {
                 setUser(response.data.author);
+                console.log(response.data.author_with_paid_news);
             });
         }
         getUser();
@@ -154,7 +154,7 @@ export function UserDashboardAuthorReceivingAccount() {
                         <label className="mt-3">Amount of Money Collected: </label>
                         {
                             user.map((data, index) => {
-                                return <div style={{ width: "max-content", border: "1px solid grey", marginLeft: "20px", padding: "20px 10px" }}>{data.balance}</div>
+                                return <div style={{ width: "max-content", border: "1px solid grey", marginLeft: "20px", padding: "20px 10px" }}>IDR. {data.balance}</div>
                             })
                         }
                     </div>
@@ -167,7 +167,7 @@ export function UserDashboardAuthorReceivingAccount() {
                         <tr style={{ border: "1px solid black", height: "", }}>
                             <th style={{ border: "1px solid black", padding: "10px 20px" }}>News Title</th>
                             <th style={{ border: "1px solid black", padding: "10px 20px" }}>Amount</th>
-                            <th style={{ padding: "10px 20px" }}>Transaction Date</th>
+                            <th style={{ padding: "10px 20px" }}>Status</th>
                         </tr>
                     </table>
                 </div>

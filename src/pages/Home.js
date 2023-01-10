@@ -12,11 +12,11 @@ export default function Home() {
     useEffect(() => {
         fetchNews();
     }, []);
-
     const fetchNews = async () => {
         axios.get("http://127.0.0.1:8000/api/news/topics").
             then(response => {
                 const allNews = response.data;
+                console.group(allNews);
                 setNews(allNews);
             });
     }
@@ -27,7 +27,7 @@ export default function Home() {
                     <div className='row'>
                         {
                             newsData.map(data => {
-                                const { topic_title, news } = data;
+                                const { topic_title, topic_slug, news } = data;
                                 return (
                                     <>
                                         <h5>{topic_title}</h5>
@@ -39,7 +39,8 @@ export default function Home() {
                                                             maxWidth: "100%",
                                                             height: "150px"
                                                         }} src={data.news_picture_link} />
-                                                        <p><a href={"/readnews/" + data.news_slug}>{data.news_title}</a></p>
+                                                        <p><a href={"/" + topic_slug + "/" + data.sub_topic_slug + "/readnews/" + data.news_slug}>{data.news_title}</a></p>
+                                                        <div style={{ height: "100px", overflowY: "auto" }}>{data.news_content}</div>
                                                     </div>
                                                 )
                                             })

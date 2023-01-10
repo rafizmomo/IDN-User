@@ -64,7 +64,7 @@ const TopNavLayoutLoggedIn = () => {
                     <div className="top-nav-members top-nav-members">
                         {topics.map((data, index) => {
                             return (
-                                <a key={index} className="top-nav-links" href={`/${data.topic_slug}`}> {data.topic_title}</a>
+                                <a key={index} className="top-nav-links" href={`/${data.topic_slug}`}>{data.topic_title}</a>
                             )
                         })}
                     </div>

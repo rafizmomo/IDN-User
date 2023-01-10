@@ -5,13 +5,18 @@ import { SubTopicTopNav } from "../layout/SubTopicTopNav";
 
 export function TopicHome() {
     const [news, setNews] = useState([])
-    const { topic_slug } = useParams();
-    useEffect(() => {
-        async function getNews() {
-            await axios.get("http://127.0.0.1:8000/api/news/topics/" + topic_slug).then(response => {
-                setNews(response.data);
+    const { topic_slug_url } = useParams();
+    const [topicSlug, setTopicSlug] = ("");
+    async function getNews() {
+        await axios.get("http://127.0.0.1:8000/api/news/topics/" + topic_slug_url).then(response => {
+            response.data.forEach(list => {
+                setNews(list.news);
+                const { topic_slug } = list;
+                setTopicSlug(topic_slug);
             });
-        }
+        });
+    }
+    useEffect(() => {
         getNews();
     }, []);
     return (
@@ -34,7 +39,7 @@ export function TopicHome() {
                                             height: "150px"
                                         }} src={data.news_picture_link} />
                                         <div>
-                                            <h4 className='card-title'>{data.news_title}</h4>
+                                            <h4 className='card-title'><a href={"/" + topic_slug_url + "/" + data.sub_topic_slug + "/readnews/" + data.news_slug}>{data.news_title}</a></h4>
                                             <div className="card-text">{data.news_content}</div>
                                         </div>
                                     </div>

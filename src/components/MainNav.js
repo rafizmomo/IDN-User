@@ -4,15 +4,13 @@ import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
 import ForgotPassword from '../pages/ForgotPassword';
 import ChangePassword from '../pages/ChangePassword';
-import { ReadNewsPage } from '../pages/ReadNews(User)';
 import { UserProfile } from '../pages/UserProfile';
 import { UpdateUserProfile } from '../pages/UpdateUserProfile';
 import { AuthorNews, CreateAuthorAccountForm, CreateNewsForm, AuthorUpdateNewsPage, AuthorDashboardOpenedNews } from '../pages/UserDashboardNews';
 import { SideNavBar } from '../layout/SideNavBar';
 import Footer from '../layout/Footer';
-import { SubTopicTopNav } from '../layout/SubTopicTopNav';
 import { UserDashboardCreateAuthorReceivingAccount, UserDashboardAuthorReceivingAccount } from '../pages/UserDashboardAuthorReceivingAccount';
-import { History } from '../pages/AdminDashboardHistory';
+import { History } from '../pages/UserDashboardHistory';
 import { NavLinks } from './NavLinks';
 import { TopicSubTopicNavigation } from './TopicSubTopicNavigation';
 import { SearchNewsPage } from '../layout/TopNavigationLoggedIn';
@@ -22,14 +20,13 @@ export function MainComp() {
             <NavLinks />
             <Routes>
                 <Route path='/' element={<><Home /><Footer /></>} />
-                <Route path='/:topic_slug/*' element={<><TopicSubTopicNavigation /><Footer /></>} />
+                <Route path='/:topic_slug_url/*' element={<><TopicSubTopicNavigation /><Footer /></>} />
                 <Route path='/signup' element={<><SignUp /><Footer /></>} />
                 <Route path='/signin' element={<><SignIn /><Footer /></>} />
                 <Route path='/forgetpassword' element={<ForgotPassword />} />
                 <Route path='/news' element={<ForgotPassword />} />
                 <Route path='/news/search/:keywordparam' element={<SearchNewsPage />} />
                 <Route path='/changepassword' element={<ChangePassword />} />
-                <Route path='/readnews/:news_slug' element={<><SubTopicTopNav /><ReadNewsPage /><Footer /></>} />
                 <Route path='/userdashboard/userprofile' element={<><SideNavBar /><UserProfile /></>} />
                 <Route path='/userdashboard/userprofile/update' element={<><SideNavBar /><UpdateUserProfile /></>} />
                 <Route path='/userdashboard/news' element={<><SideNavBar /><AuthorNews /></>} />
