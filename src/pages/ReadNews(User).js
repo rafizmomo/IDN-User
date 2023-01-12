@@ -61,7 +61,7 @@ export function ReadNewsPage() {
                                     <h4>{news.news_title}</h4>
                                     <div className="d-flex">
                                         <img className='rounded-circle' width={50} height={50} src={news.photo_profile_link} />
-                                        <p style={{ marginTop: "10px" }}>{news.name}</p>
+                                        <p style={{ marginTop: "10px" }}>Author: {news.name}</p>
                                     </div>
                                     <p>Added at: {new Date(news.added_at).toLocaleDateString()}</p>
                                 </div>

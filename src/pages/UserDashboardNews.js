@@ -345,6 +345,15 @@ function AuthorHasWrittenNews() {
     const [news, setNews] = useState([]);
     let user = window.localStorage.getItem("user");
     let userobject = JSON.parse(user);
+
+    const DeleteNews = async (id) => {
+        // let formdata = new FormData()
+        // formdata.append("topic_title", topicTitle)
+        // formdata.append("topic_id", topicId)
+        await axios.delete("http://127.0.0.1:8000/api/topics/" + id).then(res => { })
+        getTopics();
+    }
+
     useEffect(() => {
         async function getNews() {
             await axios.get("http://127.0.0.1:8000/api/news/user/" + userobject["user"]).then(response => {
@@ -406,6 +415,10 @@ function AuthorHasWrittenNews() {
                                 return (
                                     <div className="col-sm-6 border mb-3 image-view" key={index}>
                                         <p style={{ fontWeight: "bold" }} className="">{data.name}</p>
+                                        <div>
+                                            <NavLink className="btn btn-warning" to={`/userdashboard/news/open_news/${data.news_slug}/update_news`}>Update</NavLink> /
+                                            <button onClick={() => DeleteNews(data.id)} className="btn btn-danger" >Delete</button>
+                                        </div>
                                         <img style={{
                                             backgroundRepeat: "no-repeat",
                                             backgroundSize: "cover",

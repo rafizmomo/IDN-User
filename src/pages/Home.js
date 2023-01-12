@@ -35,12 +35,16 @@ export default function Home() {
                                             news.map(data => {
                                                 return (
                                                     <div className='col-sm-4'>
+
+
                                                         <img style={{
                                                             maxWidth: "100%",
                                                             height: "150px"
                                                         }} src={data.news_picture_link} />
                                                         <p><a href={"/" + topic_slug + "/" + data.sub_topic_slug + "/readnews/" + data.news_slug}>{data.news_title}</a></p>
+                                                        <h6>Author: {data.user.name}</h6>
                                                         <div style={{ height: "100px", overflowY: "auto" }}>{data.news_content}</div>
+
                                                     </div>
                                                 )
                                             })
